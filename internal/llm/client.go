@@ -336,6 +336,26 @@ func (r *ChatResponse) Native() NativeTurn {
 	return r.Choices[0].Message.Native
 }
 
+// FinishReason returns the finish reason of the first choice, or empty string if absent.
+func (r *ChatResponse) FinishReason() string {
+	if r == nil || len(r.Choices) == 0 {
+		return ""
+	}
+	return r.Choices[0].FinishReason
+}
+
+// IsTruncated reports whether the model stopped generating because it hit a token limit.
+// It recognizes standard completion termination reasons across providers, including:
+//   - "length" (OpenAI Chat Completions, Responses API, DeepSeek, standard providers)
+//   - "max_tokens" (Anthropic Messages API)
+func (r *ChatResponse) IsTruncated() bool {
+	if r == nil {
+		return false
+	}
+	reason := r.FinishReason()
+	return reason == "length" || reason == "max_tokens"
+}
+
 // ToolDef defines a tool/function available to the model.
 type ToolDef struct {
 	Type     string      `json:"type"`
