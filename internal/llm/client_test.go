@@ -2249,6 +2249,26 @@ func TestChatResponse_FinishReason_And_IsTruncated(t *testing.T) {
 			wantIsTruncated:  false,
 		},
 		{
+			name: "finish_reason uppercase LENGTH",
+			resp: &ChatResponse{
+				Choices: []Choice{
+					{FinishReason: "LENGTH"},
+				},
+			},
+			wantFinishReason: "LENGTH",
+			wantIsTruncated:  true,
+		},
+		{
+			name: "finish_reason uppercase MAX_TOKENS",
+			resp: &ChatResponse{
+				Choices: []Choice{
+					{FinishReason: "MAX_TOKENS"},
+				},
+			},
+			wantFinishReason: "MAX_TOKENS",
+			wantIsTruncated:  true,
+		},
+		{
 			name: "multiple choices uses first choice",
 			resp: &ChatResponse{
 				Choices: []Choice{

@@ -353,7 +353,7 @@ func (r *ChatResponse) IsTruncated() bool {
 		return false
 	}
 	reason := r.FinishReason()
-	return reason == "length" || reason == "max_tokens"
+	return strings.EqualFold(reason, "length") || strings.EqualFold(reason, "max_tokens")
 }
 
 // ToolDef defines a tool/function available to the model.
